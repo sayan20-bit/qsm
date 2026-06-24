@@ -3,26 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QCM Nimda & Unicode</title>
-<link rel="stylesheet" href="style.css">
+<title>Quiz Nimda & Unicode</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
+}
+
+.quiz-container{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+    width:600px;
+    max-width:90%;
+    text-align:center;
+}
+
+h1{
+    color:#0077cc;
+}
+
+#question{
+    margin:20px 0;
+}
+
+.answer{
+    display:block;
+    width:100%;
+    margin:10px 0;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#0077cc;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.answer:hover{
+    background:#005fa3;
+}
+
+#result{
+    margin-top:20px;
+    font-size:22px;
+    font-weight:bold;
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>QCM - Nimda & Faille Unicode</h1>
+<div class="quiz-container">
 
-    <div id="quiz">
-        <h2 id="question"></h2>
+<h1>Quiz Nimda & Unicode</h1>
 
-        <div id="answers"></div>
+<h2 id="question"></h2>
 
-        <button id="next">Question Suivante</button>
+<div id="answers"></div>
 
-        <p id="result"></p>
-    </div>
+<p id="result"></p>
+
 </div>
 
-<script src="script.js"></script>
+<script>
+
+const questions = [
+
+{
+question:"1. Qu'est-ce que Nimda ?",
+answers:["Un antivirus","Un ver informatique","Un pare-feu","Une base de données"],
+correct:1
+},
+
+{
+question:"2. En quelle année Nimda est-il apparu ?",
+answers:["1998","2005","2001","2010"],
+correct:2
+},
+
+{
+question:"3. Quel protocole est principalement utilisé par la faille Unicode ?",
+answers:["FTP","HTTP","SMTP","DNS"],
+correct:1
+},
+
+{
+question:"4. Quel serveur était principalement ciblé par la faille Unicode ?",
+answers:["Apache","Nginx","IIS","Tomcat"],
+correct:2
+},
+
+{
+question:"5. Quel est l'objectif de la faille Unicode ?",
+answers:[
+"Augmenter la vitesse du serveur",
+"Contourner les restrictions d'accès",
+"Créer un antivirus",
+"Supprimer Internet"
+],
+correct:1
+},
+
+{
+question:"6. Nimda peut infecter :",
+answers:[
+"Serveur Web",
+"Réseau local",
+"Site Web",
+"Toutes les réponses"
+],
+correct:3
+},
+
+{
+question:"7. Quelle mesure protège contre Nimda ?",
+answers:[
+"Ignorer les mises à jour",
+"Installer les correctifs de sécurité",
+"Supprimer les sauvegardes",
+"Désactiver le pare-feu"
+],
+correct:1
+},
+
+{
+question:"8. La faille Unicode permet :",
+answers:[
+"Accès non autorisé aux fichiers",
+"Accélérer Internet",
+"Créer une base de données",
+"Installer Windows"
+],
+correct:0
+},
+
+{
+question:"9. Quel est le meilleur moyen de prévention ?",
+answers:[
+"Mise à jour régulière",
+"Aucune protection",
+"Supprimer le serveur",
+"Désactiver HTTP"
+],
+correct:0
+},
+
+{
+question:"10. Nimda est classé comme :",
+answers:[
+"Virus",
+"Worm",
+"Spyware",
+"Firewall"
+],
+correct:1
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const resultElement = document.getElementById("result");
+
+function loadQuestion(){
+
+const q = questions[currentQuestion];
+
+questionElement.innerText = q.question;
+answersElement.innerHTML = "";
+resultElement.innerHTML = "";
+
+q.answers.forEach((answer,index)=>{
+
+const btn = document.createElement("button");
+
+btn.innerText = answer;
+btn.className = "answer";
+
+btn.onclick = () => {
+
+document.querySelectorAll(".answer")
+.forEach(b => b.disabled = true);
+
+if(index === q.correct){
+
+resultElement.innerHTML = "✅ Très Bien";
+resultElement.style.color = "green";
+score++;
+
+}else{
+
+resultElement.innerHTML = "❌ Réessayez";
+resultElement.style.color = "red";
+
+}
+
+setTimeout(() => {
+
+currentQuestion++;
+
+if(currentQuestion < questions.length){
+
+loadQuestion();
+
+}else{
+
+questionElement.innerHTML =
+`🎉 Quiz Terminé !<br>Score : ${score}/${questions.length}`;
+
+answersElement.innerHTML = "";
+
+if(score >= 8){
+
+resultElement.innerHTML = "🏆 Excellent Travail !";
+resultElement.style.color = "green";
+
+}else{
+
+resultElement.innerHTML = "📚 Continuez à réviser.";
+resultElement.style.color = "orange";
+
+}
+
+}
+
+},1000);
+
+};
+
+answersElement.appendChild(btn);
+
+});
+
+}
+
+loadQuestion();
+
+</script>
 
 </body>
 </html>
+```
